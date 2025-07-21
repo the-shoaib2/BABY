@@ -23,11 +23,5 @@
       "src": "/(.*)",
       "dest": "/$1"
     }
-  ],
-  "crons": [
-    {
-      "path": "/api/cron/auto-meals",
-      "schedule": "* * * * *"
-    }
   ]
 }
