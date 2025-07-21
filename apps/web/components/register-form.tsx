@@ -199,11 +199,24 @@ export default function RegisterForm() {
       // Registration successful
       toast.success('Account created successfully!', { id: toastId });
       
-      // Redirect to login after a short delay
-      setTimeout(() => {
+      // Auto-login after registration
+      try {
+        const loginResult = await signIn('credentials', {
+          email: formData.email.trim(),
+          password: formData.password,
+          redirect: false,
+          callbackUrl: '/profile',
+        });
+        if (loginResult?.error) {
+          toast.error('Account created, but failed to log in. Please sign in manually.', { id: toastId });
+          router.push('/login?registered=true');
+        } else {
+          toast.success('Logged in successfully!', { id: toastId });
+          router.push('/profile');
+        }
+      } catch (e) {
         router.push('/login?registered=true');
-      }, 1500);
-      
+      }
       return true;
     } catch (error) {
       console.error('Registration error:', error);
@@ -421,14 +434,9 @@ export default function RegisterForm() {
       <CardHeader className="space-y-2">
         <CardTitle className="text-xl font-bold text-center">
           Sign Up
-          {/* {currentStep === 1 && 'Your Information'}
-          {currentStep === 2 && 'Create Password'}
-          {currentStep === 3 && 'Verify You\'re Human'} */}
         </CardTitle>
         <CardDescription className="text-center text-xs">
-          {currentStep === 1 && 'Enter your name and email address'}
-          {currentStep === 2 && 'Create a secure password'}
-          {currentStep === 3 && 'Complete the CAPTCHA to continue'}
+          Sign up with Google to create your account
         </CardDescription>
 
         <div className="py-4">
@@ -441,15 +449,11 @@ export default function RegisterForm() {
                 setIsGoogleLoading(true)
                 const result = await signIn("google", { 
                   redirect: false,
-                  callbackUrl: '/dashboard'
+                  callbackUrl: '/profile'
                 })
-                
                 if (result?.error) {
                   throw new Error(result.error)
                 }
-                
-                // If we get here, the OAuth flow should handle the redirect
-                // No need to do anything else here
               } catch (error) {
                 console.error("Google sign in error:", error)
                 toast.error(error instanceof Error ? error.message : "Failed to sign in with Google")
@@ -489,263 +493,8 @@ export default function RegisterForm() {
             )}
           </Button>
         </div>
-        <div className="relative my-4">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t"></div>
-          </div>
-          <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-background px-2 text-muted-foreground">Or continue with email</span>
-          </div>
-        </div>
       </CardHeader>
-      <CardContent>
-        <div className="relative min-h-[10rem]">
-          {/* Step 1: Name and Email */}
-          <div 
-            className={`absolute left-0 right-0 transition-all duration-300 ease-in-out ${currentStep === 1 ? 'opacity-100 z-10' : 'opacity-0 -z-10 pointer-events-none'}`}
-            
-          >
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
-                <div className="space-y-1">
-                  <Input
-                    id="name"
-                    name="name"
-                    type="text"
-                    placeholder="Enter your full name"
-                    value={name}
-                    onChange={handleInputChange}
-                    className={hasError('name')}
-                    required
-                  />
-                  {errors.name && (
-                    <p className="text-xs text-destructive">{errors.name}</p>
-                  )}
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <div className="space-y-1">
-                  <Input
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={handleInputChange}
-                    className={hasError('email')}
-                    required
-                  />
-                  {errors.email && (
-                    <p className="text-xs text-destructive">{errors.email}</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Step 2: Password */}
-          <div 
-            className={`absolute left-0 right-0 transition-all duration-300 ease-in-out ${currentStep === 2 ? 'opacity-100 z-10' : 'opacity-0 -z-10 pointer-events-none'}`}
-            
-          >
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <div className="relative">
-                  <div className="space-y-1">
-                    <Input
-                      id="password"
-                      name="password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Create a password"
-                      value={password}
-                      onChange={handleInputChange}
-                      className={`pr-10 ${hasError('password')}`}
-                      required
-                    />
-                    {errors.password && (
-                      <p className="text-xs text-destructive">{errors.password}</p>
-                    )}
-                  </div>
-                  <button
-                    type="button"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-                    onClick={() => setShowPassword(!showPassword)}
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <div className="relative">
-                  <div className="space-y-1">
-                    <Input
-                      id="confirmPassword"
-                      name="confirmPassword"
-                      type={showConfirmPassword ? "text" : "password"}
-                      placeholder="Confirm your password"
-                      value={confirmPassword}
-                      onChange={handleInputChange}
-                      className={`pr-10 ${hasError('confirmPassword')}`}
-                      required
-                    />
-                    {errors.confirmPassword && (
-                      <p className="text-xs text-destructive">{errors.confirmPassword}</p>
-                    )}
-                  </div>
-                  <button
-                    type="button"
-                    className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                  >
-                    {showConfirmPassword ? (
-                      <EyeOff className="h-4 w-4" />
-                    ) : (
-                      <Eye className="h-4 w-4" />
-                    )}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Step 3: CAPTCHA */}
-          <div 
-            className={`absolute left-0 right-0 transition-all duration-300 ease-in-out ${currentStep === 3 ? 'opacity-100 z-10' : 'opacity-0 -z-10 pointer-events-none'}`}
-            
-          >
-            <div className="space-y-4">
-              {isLoadingCaptcha ? (
-                <div className="flex h-32 items-center justify-center">
-                  <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                </div>
-              ) : (
-                <div>
-                  <div className="flex items-center justify-between">
-                    <Label htmlFor="captcha">Enter the text shown below:</Label>
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      onClick={fetchCaptcha}
-                      disabled={isLoadingCaptcha}
-                      className="h-8 w-8 p-0 bg-muted/30 rounded-lg"
-                      title="Refresh CAPTCHA"
-                    >
-                      <RefreshCw className={`h-4 w-4 rounded-full bg-muted/30 ${isLoadingCaptcha ? 'animate-spin' : ''}`} />
-                    </Button>
-                  </div>
-                  <div className="relative mt-2 flex justify-center items-center p-4 border-none h-16">
-                    <div className="h-full w-full flex items-center justify-center">
-                      {captchaImage ? (
-                        <img 
-                          src={captchaImage} 
-                          alt="CAPTCHA" 
-                        className="h-16 object-contain rounded-lg"
-                          onError={(e) => {
-                            e.currentTarget.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjUwIiB2aWV3Qm94PSIwIDAgMTUwIDUwIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxyZWN0IHdpZHRoPSIxNTAiIGhlaWdodD0iNTAiIGZpbGw9IiNmOGY5ZmEiLz48dGV4dCB4PSI3NSIgeT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzY2NiI+RmFpbGVkIHRvIGxvYWQgQ0FQVENIQTwvdGV4dD48L3N2Zz4=';
-                            setError('Failed to load CAPTCHA. Please try again.');
-                          }}
-                        />
-                      ) : (
-                        <div className="text-muted-foreground">
-                          Loading CAPTCHA...
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="space-y-1 mt-4">
-                    <Input
-                      id="captcha"
-                      placeholder="Type the text above"
-                      value={captchaText}
-                      onChange={(e) => {
-                        setCaptchaText(e.target.value);
-                        if (errors.captcha) {
-                          setErrors(prev => ({ ...prev, captcha: undefined }));
-                        }
-                      }}
-                      className={`w-full text-center font-mono tracking-widest ${errors.captcha ? 'border-destructive' : ''}`}
-                      autoComplete="off"
-                      autoFocus
-                    />
-                    {errors.captcha && (
-                      <p className="text-xs text-destructive text-center">{errors.captcha}</p>
-                    )}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-        <div className="mt-6">
-        {StepIndicator}
-        </div>
-        <div className="mt-6 flex items-center justify-between">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={prevStep}
-            disabled={currentStep === 1 || isLoading}
-            className={currentStep === 1 ? 'invisible' : ''}
-          >
-            Back
-          </Button>
-          <Button
-            type="button"
-            onClick={async (e) => {
-              e.preventDefault();
-              
-              try {
-                if (currentStep < 3) {
-                  await nextStep();
-                } else {
-                  // For the final step, validate and submit
-                  const isValid = validateStep(3);
-                  if (!isValid) {
-                    return;
-                  }
-                  
-                  setIsLoading(true);
-                  const success = await handleCaptchaSubmit();
-                  if (!success) {
-                    // If submission failed, stay on the current step
-                    return;
-                  }
-                }
-              } catch (error) {
-                console.error('Error in form submission:', error);
-                toast.error('An error occurred. Please try again.');
-              } finally {
-                setIsLoading(false);
-              }
-            }}
-            disabled={isLoading || isLoadingCaptcha || !isStepValid(currentStep)}
-            className="ml-auto min-w-32 justify-center"
-          >
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                {currentStep === 3 ? 'Creating Account...' : 'Loading...'}
-              </>
-            ) : currentStep === 1 ? 'Next' : 
-              currentStep === 2 ? 'Next' : 'Create Account'}
-          </Button>
-        </div>
-        <div className="mt-4 text-center text-sm">
-          Already have an account?{" "}
-          <Link href="/login" className="text-primary hover:underline">
-            Sign in
-          </Link>
-        </div>
-      </CardContent>
     </Card>
   </div>
-)
+  )
 }
