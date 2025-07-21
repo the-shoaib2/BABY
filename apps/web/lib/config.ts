@@ -391,20 +391,13 @@ export const appConfig: AppConfig = {
     },
     {
       id: 4,
-      title: "Notifications",
-      description: "Get timely reminders for meal inputs, voting, and payment deadlines.",
-      icon: "Bell",
-      category: "communication"
-    },
-    {
-      id: 5,
       title: "Cost Calculation",
       description: "Automatic calculation of meal rates, individual costs, and monthly summaries.",
       icon: "TrendingUp",
       category: "finance"
     },
     {
-      id: 6,
+      id: 5,
       title: "Role-Based Access",
       description: "Different access levels for admins, managers, and members with customizable permissions.",
       icon: "Shield",

@@ -13,6 +13,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
+import PromptInput from "@/components/PromptInput"
 
 const Mermaid = dynamic(() => import("@/components/ui/mermaid"), { ssr: false })
 
@@ -95,11 +96,12 @@ export default function BabyAnalyzer() {
               <CardDescription>Paste your code or upload a file to generate a flow diagram or summary.</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col gap-6 p-0">
-              <textarea
-                className="w-full min-h-[100px] border border-muted rounded-lg p-3 text-base focus:outline-none focus:ring-2 focus:ring-primary/40 transition-all duration-200 resize-y bg-background/80 placeholder:text-muted-foreground"
-                placeholder="Paste your code or describe what you want (e.g., 'Show flow diagram for this C code')"
+              <PromptInput
                 value={input}
-                onChange={e => setInput(e.target.value)}
+                onChange={setInput}
+                onSubmit={handleAnalyze}
+                placeholder="Paste your code or describe what you want (e.g., 'Show flow diagram for this C code')"
+                disabled={loading}
               />
               <input
                 type="file"

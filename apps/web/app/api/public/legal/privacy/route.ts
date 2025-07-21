@@ -51,7 +51,6 @@ export async function GET() {
             "Process payments and manage subscriptions",
             "Enable collaboration between developers and team members",
             "Personalize your experience and provide relevant content",
-            "Send important updates and notifications",
             "Improve our platform and develop new features",
             "Ensure security and prevent fraud",
             "Comply with legal obligations"

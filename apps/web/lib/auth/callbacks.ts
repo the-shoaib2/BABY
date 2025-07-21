@@ -43,7 +43,7 @@ export async function signInCallback(params: any) {
             email: user.email,
             name: user.name || user.email.split('@')[0], 
             image: user.image,
-            role: 'MEMBER',
+            role: 'USER',
             emailVerified: new Date(),
 
             isActive: true,

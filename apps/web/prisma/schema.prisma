@@ -32,6 +32,7 @@ model User {
   isActive         Boolean          @default(true)
   resetToken       String?          
   resetTokenExpiry DateTime?
+  role             Role             @default(USER)
 
   // RELATIONS
   accounts         Account[]
@@ -40,6 +41,12 @@ model User {
   @@index([emailVerified, isActive])
   @@index([resetToken])
   @@index([createdAt])
+}
+
+enum Role {
+  SUPER
+  ADMIN
+  USER
 }
 
 /// ACCOUNT MODEL
