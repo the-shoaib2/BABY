@@ -120,11 +120,6 @@ export default function InstallOptionsSection() {
               className="group"
             >
               <Card className={`h-full hover:shadow-xl transition-all duration-300 border-2 border-transparent hover:border-primary/20 ${platform.featured ? 'ring-2 ring-primary' : ''}`}>
-                {platform.featured && (
-                  <Badge className="absolute -top-3 left-4 bg-primary">
-                    Recommended
-                  </Badge>
-                )}
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors">
