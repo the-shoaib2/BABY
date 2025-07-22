@@ -9,6 +9,9 @@ import { getServerAuthSession } from "@/lib/auth/auth"
 
 import { ToastProvider } from "@/components/providers/toast-provider"
 import InternetStatusBanner from "@/components/internet-status-card"
+import { PublicHeader } from "@/components/public-header"
+import { PublicFooter } from "@/components/public-footer"
+import { LoadingBar } from "@/components/loading-bar"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -31,8 +34,13 @@ export default async function RootLayout({
             <ThemeProvider>
               <>
                 <InternetStatusBanner />
-                <div className="flex-1 flex flex-col">
-                  {children}
+                <div className="flex flex-col overflow-hidden min-h-screen">
+                  <LoadingBar />
+                  <PublicHeader />
+                  <main className="flex-1 w-full overflow-y-auto">
+                    {children}
+                    <PublicFooter />
+                  </main>
                 </div>
                 <ToastProvider />
               </>

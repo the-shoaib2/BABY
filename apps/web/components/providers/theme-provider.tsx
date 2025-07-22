@@ -31,7 +31,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
       defaultTheme="system"
       enableSystem
       disableTransitionOnChange
-      storageKey="meal-sphere-theme"
+      storageKey="baby-theme"
       {...props}
     >
       <ThemeWrapper>

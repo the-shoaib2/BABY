@@ -15,7 +15,7 @@ import { UserAvatar } from "./user-avatar"
 import { handleNavigation } from "@/lib/utils"
 
 const navLinks = [
-  { name: 'Install', href: '/install' },
+  { name: 'Ai', href: '/ai' },
   { name: 'Docs', href: '/docs' },
   { name: 'Blog', href: '/blog' },
   { name: 'Pricing', href: '/pricing' },

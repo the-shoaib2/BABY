@@ -13,7 +13,7 @@ const nextConfig = {
     serverActions: {
       allowedOrigins: [
         'localhost:3000', 
-        'meal-sphere.vercel.app',
+        'baby.vercel.app',
         '*.vercel.app'
       ],
     },

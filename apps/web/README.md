@@ -35,7 +35,7 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-# Meal Sphere - Enhanced Account Balance System
+# B.A.B.Y. - Enhanced Account Balance System
 
 A comprehensive meal management system with advanced account balance tracking, expense management, and meal rate calculations.
 

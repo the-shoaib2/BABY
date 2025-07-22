@@ -3,9 +3,7 @@ import { getServerSession } from "next-auth/next"
 import { authOptions } from "@/lib/auth/auth"
 import { redirect } from "next/navigation"
 import { prisma } from "@/lib/prisma"
-import { ProfileForm } from "@/components/profile/profile-form"
-import { AppearanceForm } from "@/components/profile/appearance-form"
-import { SecurityForm } from "@/components/profile/security-form"
+import { SettingsTabs } from "@/components/profile/profile-tabs"
 import { Skeleton } from "@/components/ui/skeleton"
 
 export default async function ProfilePage() {
@@ -26,21 +24,15 @@ export default async function ProfilePage() {
   }
 
   return (
-    <div className="container mx-auto space-y-4">
-      <div>
+    <div className="max-w-3xl w-full mx-auto py-8 px-4">
+      <div className="mb-8 text-center">
         <h1 className="text-2xl font-bold">Profile Settings</h1>
         <p className="text-muted-foreground text-sm mt-1">
           Manage your account information, appearance preferences, and security options.
         </p>
       </div>
       <Suspense fallback={<Skeleton className="h-64 w-full mb-4" />}>
-        <ProfileForm user={user} />
-      </Suspense>
-      <Suspense fallback={<Skeleton className="h-64 w-full mb-4" />}>
-        <AppearanceForm user={user} />
-      </Suspense>
-      <Suspense fallback={<Skeleton className="h-64 w-full mb-4" />}>
-        <SecurityForm user={user} />
+        <SettingsTabs user={user} />
       </Suspense>
     </div>
   )

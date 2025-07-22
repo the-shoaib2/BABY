@@ -12,8 +12,7 @@ export default function NotFound() {
   
   const quickLinks = [
     { name: "Home", href: "/", icon: Home },
-    { name: "Meal Plans", href: "/meal-plans", icon: Calendar },
-    { name: "Recipes", href: "/recipes", icon: ChefHat },
+    { name: "B.A.B.Y. AI", href: "/", icon: Calendar },
   ]
 
   return (

@@ -150,12 +150,7 @@ export default function PricingPage() {
                 className="group"
               >
                 <Card className={`h-full hover:shadow-xl transition-all duration-300 border-2 ${plan.popular ? 'border-primary ring-2 ring-primary' : 'border-transparent hover:border-primary/20'}`}>
-                  {plan.popular && (
-                    <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary">
-                      <Star className="w-3 h-3 mr-1" />
-                      Most Popular
-                    </Badge>
-                  )}
+                
                   <CardHeader>
                     <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center text-primary group-hover:bg-primary/20 transition-colors mb-4">
                       {plan.icon}
