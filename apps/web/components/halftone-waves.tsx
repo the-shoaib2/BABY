@@ -55,7 +55,7 @@ export default function Component() {
 
       drawHalftoneWave()
 
-      time += 0.05
+      time += 0.015
       animationFrameId = requestAnimationFrame(animate)
     }
 
