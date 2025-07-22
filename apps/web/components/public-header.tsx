@@ -13,6 +13,9 @@ import { cn } from "@/lib/utils"
 import { useRouter } from "next/navigation"
 import { UserAvatar } from "./user-avatar"
 import { handleNavigation } from "@/lib/utils"
+import { signOut } from "next-auth/react"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { LogOut } from "lucide-react"
 
 const navLinks = [
   { name: 'Ai', href: '/ai' },
@@ -121,14 +124,42 @@ export function PublicHeader() {
                       </Button>
                     ))}
                   </div>
-                  <div className="pt-4 border-t space-y-3">
-                    <Button variant="outline" className="w-full" asChild>
-                      <Link href="/login" onClick={() => setIsMenuOpen(false)}>Sign In</Link>
-                    </Button>
-                    <Button className="w-full" asChild>
-                      <Link href="/register" onClick={() => setIsMenuOpen(false)}>Get Started</Link>
-                    </Button>
-                  </div>
+                  {/* Only show auth buttons if not authenticated; if authenticated, show user info and logout */}
+                  {session ? (
+                    <div className="pt-4 border-t space-y-3 flex flex-col items-center">
+                      <Avatar className="h-12 w-12 mb-2">
+                        <AvatarImage src={session.user?.image || ""} alt={session.user?.name || "User"} />
+                        <AvatarFallback>
+                          {session.user?.name
+                            ? session.user.name.split(" ").map((n) => n[0]).join("").toUpperCase()
+                            : "U"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <div className="text-center">
+                        <div className="font-semibold text-base">{session.user?.name || "User"}</div>
+                        {session.user?.email && (
+                          <div className="text-xs text-muted-foreground">{session.user.email}</div>
+                        )}
+                      </div>
+                      <Button
+                        variant="outline"
+                        className="w-full mt-3 flex items-center justify-center"
+                        onClick={() => signOut({ callbackUrl: "/" })}
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Log out
+                      </Button>
+                    </div>
+                  ) : (
+                    <div className="pt-4 border-t space-y-3">
+                      <Button variant="outline" className="w-full" asChild>
+                        <Link href="/login" onClick={() => setIsMenuOpen(false)}>Sign In</Link>
+                      </Button>
+                      <Button className="w-full" asChild>
+                        <Link href="/register" onClick={() => setIsMenuOpen(false)}>Get Started</Link>
+                      </Button>
+                    </div>
+                  )}
                 </nav>
               </div>
             </SheetContent>

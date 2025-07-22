@@ -9,13 +9,15 @@ import { signIn } from "next-auth/react"
 import { toast } from "react-hot-toast"
 import { Code2, Loader2 } from "lucide-react"
 import { FaGithub, FaApple, FaMicrosoft } from 'react-icons/fa'
+import { useSession } from "next-auth/react"
 
 export default function LoginForm() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
   const [isGithubLoading, setIsGithubLoading] = useState(false)
   const [isAppleLoading, setIsAppleLoading] = useState(false)
   const [isMicrosoftLoading, setIsMicrosoftLoading] = useState(false)
-  const router = useRouter()
   const searchParams = useSearchParams()
 
   // Check for error parameters
@@ -27,6 +29,13 @@ export default function LoginForm() {
       toast.error('Your session has expired. Please sign in again.')
     }
   }, [error])
+
+  // Redirect if authenticated
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.replace('/');
+    }
+  }, [status, router]);
 
   const handleProviderSignIn = async (provider: string, setLoading: (v: boolean) => void) => {
     try {

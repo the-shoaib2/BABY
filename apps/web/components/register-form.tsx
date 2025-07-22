@@ -11,6 +11,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { signIn } from "next-auth/react"
 import { toast } from "react-hot-toast"
 import { FaGithub, FaApple, FaMicrosoft } from 'react-icons/fa'
+import { useSession } from "next-auth/react"
 
 // Form validation types
 type FormErrors = {
@@ -22,6 +23,8 @@ type FormErrors = {
 };
 
 export default function RegisterForm() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
     name: "",
@@ -42,13 +45,19 @@ export default function RegisterForm() {
   const [captchaImage, setCaptchaImage] = useState("");
   const [isLoadingCaptcha, setIsLoadingCaptcha] = useState(false);
   const [error, setError] = useState("");
-  const router = useRouter();
   const [isMounted, setIsMounted] = useState(false);
 
   // Set isMounted to true after initial render
   useEffect(() => {
     setIsMounted(true);
   }, []);
+  
+  // Redirect if authenticated
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.replace('/');
+    }
+  }, [status, router]);
   
   const { name, email, password, confirmPassword } = formData
   
