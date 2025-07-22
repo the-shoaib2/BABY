@@ -4,23 +4,17 @@ import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Eye, EyeOff, Utensils, Loader2, Code2 } from "lucide-react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { signIn } from "next-auth/react"
 import { toast } from "react-hot-toast"
+import { Code2, Loader2 } from "lucide-react"
 import { FaGithub, FaApple, FaMicrosoft } from 'react-icons/fa'
 
 export default function LoginForm() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [isLoading, setIsLoading] = useState(false)
   const [isGoogleLoading, setIsGoogleLoading] = useState(false)
   const [isGithubLoading, setIsGithubLoading] = useState(false)
   const [isAppleLoading, setIsAppleLoading] = useState(false)
   const [isMicrosoftLoading, setIsMicrosoftLoading] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
   const router = useRouter()
   const searchParams = useSearchParams()
 
@@ -33,49 +27,6 @@ export default function LoginForm() {
       toast.error('Your session has expired. Please sign in again.')
     }
   }, [error])
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (!email || !password) {
-      toast.error('Please fill in all fields')
-      return
-    }
-
-    setIsLoading(true)
-    const toastId = toast.loading('Signing in...')
-
-    try {
-      const callbackUrl = searchParams?.get('callbackUrl') || '/profile'
-      
-      const result = await signIn('credentials', {
-        email: email.trim(),
-        password,
-        redirect: false,
-        callbackUrl
-      })
-      
-      if (!result) {
-        throw new Error('No response from server')
-      }
-      
-      if (result.error) {
-        toast.error('Invalid email or password', { id: toastId })
-        return
-      }
-      
-      // If we get here, login was successful
-      toast.success('Login successful!', { id: toastId })
-      
-      // Use router.push for proper navigation
-      router.push(callbackUrl)
-      
-    } catch (error) {
-      toast.error('An error occurred. Please try again.', { id: toastId })
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   const handleProviderSignIn = async (provider: string, setLoading: (v: boolean) => void) => {
     try {
@@ -113,7 +64,7 @@ export default function LoginForm() {
             >
               {isGoogleLoading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {React.createElement(Loader2 as unknown as React.ElementType, { className: "mr-2 h-4 w-4 animate-spin" })}
                   <span>Google</span>
                 </>
               ) : (
@@ -137,12 +88,12 @@ export default function LoginForm() {
             >
               {isGithubLoading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {React.createElement(Loader2 as unknown as React.ElementType, { className: "mr-2 h-4 w-4 animate-spin" })}
                   <span>GitHub</span>
                 </>
               ) : (
                 <>
-                  <FaGithub className="mr-2 h-4 w-4" />
+                  {React.createElement(FaGithub as unknown as React.ElementType, { className: "mr-2 h-4 w-4" })}
                   GitHub
                 </>
               )}
@@ -155,12 +106,12 @@ export default function LoginForm() {
             >
               {isAppleLoading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {React.createElement(Loader2 as unknown as React.ElementType, { className: "mr-2 h-4 w-4 animate-spin" })}
                   <span>Apple</span>
                 </>
               ) : (
                 <>
-                  <FaApple className="mr-2 h-4 w-4" />
+                  {React.createElement(FaApple as unknown as React.ElementType, { className: "mr-2 h-4 w-4" })}
                   Apple
                 </>
               )}
@@ -173,12 +124,12 @@ export default function LoginForm() {
             >
               {isMicrosoftLoading ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  {React.createElement(Loader2 as unknown as React.ElementType, { className: "mr-2 h-4 w-4 animate-spin" })}
                   <span>Microsoft</span>
                 </>
               ) : (
                 <>
-                  <FaMicrosoft className="mr-2 h-4 w-4" />
+                  {React.createElement(FaMicrosoft as unknown as React.ElementType, { className: "mr-2 h-4 w-4" })}
                   Microsoft
                 </>
               )}

@@ -19,6 +19,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "postcss": "^8.4.35"
+    "postcss": "^8.4.35",
+    "react-icons": "^5.5.0"
   }
 }

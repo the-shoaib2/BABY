@@ -1,5 +1,5 @@
-import BabyAnalyzer from "@/components/baby-analyzer"
+import AIPrompt from "@/components/ai-prompt"
 
 export default function HomePage() {
-  return <BabyAnalyzer />
+  return <AIPrompt />
 }
