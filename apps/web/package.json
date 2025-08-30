@@ -70,7 +70,7 @@
     "mermaid": "^11.9.0",
     "mongodb": "^5.9.2",
     "nanoid": "^5.1.5",
-    "next": "^15.3.3",
+    "next": "^15.5.2",
     "next-auth": "^4.24.11",
     "next-i18next": "^15.4.2",
     "next-themes": "^0.4.6",
